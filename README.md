@@ -1,24 +1,60 @@
-# 算法研究实验室
+# Algorithms_Research_Lab · 算法研究实验室
 
-这个仓库用于系统学习底层算法的应用场景、实现逻辑和工程验证。目标不是只收集代码，而是让每一个算法都留下完整学习轨迹：问题从哪里来、核心思想是什么、如何手写实现、怎样验证正确性、最后掌握到了什么。
+这个仓库用于长期记录和理解各种算法、模型及相关框架，通过代码把数学原理变成可执行、可验证的理解。目标不是只收集代码，而是让每一个主题都留下完整学习轨迹：问题从哪里来、核心思想是什么、如何手写实现、怎样验证、最后掌握到了什么。
+
+## 仓库边界
+
+- 收录算法、模型、数学原理的最小实现、推导、对照实验与复盘。
+- 框架学习围绕具体算法展开，例如用 PyTorch 的张量、自动求导和网络层理解 MLP、CNN、RNN、Attention 与 Transformer；不做通用 API 手册。
+- Python、Git、Docker、ROS2、MuJoCo API 等通用工具教程不放在这里。实验必要的依赖、运行命令和环境版本写在对应项目中。
+- Zotero 负责文献管理，Obsidian 负责个人知识整理，不属于本代码仓库职责。这里保留与实现直接相关的笔记、文献引用和实验结论，不同步文献库或整个笔记库。
+
+仓库标准名称为 `Algorithms_Research_Lab`。GitHub 远程名称尚待改正时，使用现有地址克隆，并显式指定正确的本地目录名：
+
+```bash
+git clone https://github.com/nightstars10086/Algorithms_Reaserch_Lab.git Algorithms_Research_Lab
+cd Algorithms_Research_Lab
+```
+
+远程完成重命名后，克隆地址改用 `https://github.com/nightstars10086/Algorithms_Research_Lab.git`，已有副本可更新：
+
+```bash
+git remote set-url origin https://github.com/nightstars10086/Algorithms_Research_Lab.git
+```
 
 ## 仓库结构
 
 ```text
 .
-├── algorithms/              # 算法源码，按主题分类组织
+├── algorithms/              # 最小、可解释、可测试的核心实现
 │   ├── basic/               # 基础算法：排序、查找、递归、分治等
 │   ├── data_structures/     # 数据结构：链表、栈、队列、树、图等
 │   ├── dynamic_programming/ # 动态规划与状态建模
 │   ├── graph/               # 图论算法
 │   ├── optimization/        # 启发式、智能优化、搜索优化
-│   └── deep_learning/       # 深度学习底层模块与训练逻辑
-├── docs/                    # 学习流程、记录模板、专题笔记
-├── examples/                # 算法使用示例和小型应用场景
-├── projects/                # 小型项目验证，适合抽象算法和实验型算法
-├── notebooks/               # 探索性笔记、推导草稿、实验记录
-└── tests/                   # 自动化测试，验证算法正确性和边界情况
+│   └── deep_learning/       # 张量、梯度、网络层与模型核心
+├── docs/                    # 原理、学习路线、记录模板、专题笔记
+├── examples/                # 简短调用示例，保留已有入口
+├── projects/                # 小型完整验证项目与可复现实验
+│   └── deep_learning/       # 手写实现与 PyTorch 模型的对照验证
+├── notebooks/               # 探索实验、推导草稿、可视化
+│   └── deep_learning/       # 张量、梯度和模型行为的探索
+└── tests/                   # 核心实现正确性、边界、数值与梯度检查
 ```
+
+已有分类和模板保持兼容。只在开始具体实现或实验时创建主题子目录，不预建整套空模型目录。
+
+## 深度学习路线
+
+按 **PyTorch 基础 → MLP → CNN → RNN / LSTM / GRU → Attention → Transformer** 推进，详细任务与完成标准见 [深度学习学习路线](docs/deep-learning-roadmap.md)。
+
+每个模型都走三层：
+
+1. **From scratch**：先推导公式和张量形状，再用 Python 或张量基本运算实现核心；明确哪些梯度手推，哪些由 autograd 计算。
+2. **PyTorch API**：用对应框架模块实现同一计算，统一输入、参数和约定，对照输出及梯度，而不只会调用接口。
+3. **Experiment**：用小数据完成训练或行为验证，改变一个因素，记录预期、结果和失败原因。
+
+核心运算放在 `algorithms/deep_learning/`；短小 API 对照放在 `examples/`；自由探索放在 `notebooks/deep_learning/`；完整训练与评估放在 `projects/deep_learning/`。阶段编号只用于路线顺序，不强制进入 Python 包名。
 
 ## 推荐学习闭环
 
@@ -40,7 +76,7 @@
    在 `examples/<topic>/<algorithm_name>_example.py` 中写一个贴近真实问题的小例子。
 
 6. 选择验证方式  
-   确定型算法优先写单元测试，放在 `tests/<topic>/test_<algorithm_name>.py`。概念实验型算法优先做小型项目验证，放在 `projects/<topic>/<algorithm_name>/`，用小数据集、可视化、指标或案例解释验证自己是否理解。
+   确定型算法优先写单元测试，放在 `tests/<topic>/test_<algorithm_name>.py`。概念实验型算法既要测试可判定的核心运算，也要在 `projects/<topic>/<algorithm_name>/` 用小数据集、可视化、指标或案例解释验证整体行为。
 
 7. 运行验证  
    单元测试使用 `python -m pytest`。小型项目验证运行项目里的 `run.py` 或 notebook，并把结论写回验证报告。
@@ -98,7 +134,20 @@ docs/notes/basic/binary_search.md
 | `dynamic_programming` | 背包、区间 DP、树形 DP、状态压缩 |
 | `graph` | BFS、DFS、最短路、最小生成树、拓扑排序、网络流 |
 | `optimization` | 贪心、回溯、局部搜索、遗传算法、模拟退火、聚类优化 |
-| `deep_learning` | 张量、反向传播、优化器、损失函数、基础网络层 |
+| `deep_learning` | 张量、反向传播、优化器、损失函数、MLP、CNN、RNN/LSTM/GRU、Attention、Transformer |
+
+## 当前进度与运行
+
+目前仓库包含目录说明、学习流程和模板，尚未实现具体算法或模型。索引中的 `todo` 路径是计划，不代表文件已经存在；深度学习路线也不代表已有可运行模型。
+
+基础检查使用 Python 3.10 或更新版本和 pytest：
+
+```bash
+python -m pip install "pytest>=8.0"
+python -m pytest
+```
+
+PyTorch、Notebook 和数据集依赖按实际实验需要添加，并在实验文档中记录版本、设备与运行方式；基础目录检查不依赖 PyTorch。
 
 ## 建议节奏
 

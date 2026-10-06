@@ -4,6 +4,8 @@
 
 推荐结构：
 
+下面是开始具体项目时的示例，不要求预建所有目录。`data/`、`outputs/` 仅在确有小文件需要保存时创建，大型数据集和模型权重留在仓库外。
+
 ```text
 projects/<topic>/<algorithm_name>/
 ├── README.md
@@ -22,3 +24,5 @@ projects/<topic>/<algorithm_name>/
 - 不同参数对比
 - 不同随机种子对比
 - 失败案例分析
+
+深度学习项目见 [deep_learning](deep_learning/README.md)，采用手写核心 → PyTorch API 基线 → 小数据实验的顺序。记录依赖版本、设备、随机种子、参数、数据划分与运行方式，复用 `algorithms/` 的核心实现。
