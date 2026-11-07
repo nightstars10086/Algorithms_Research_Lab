@@ -100,10 +100,10 @@ def set_axes(axes, xlabel, ylabel, xlim, ylim,
         axes.legend(legend)
     axes.grid(True)
 
-def train_ch3(net, train_iter, test_iter, loss, num_epoches, updater):
-    animator = Animator(xlabel='epoch', xlim=[1, num_epoches], ylim=[0.3, 0.9],
+def train_ch3(net, train_iter, test_iter, loss, num_epochs, updater):
+    animator = Animator(xlabel='epoch', xlim=[1, num_epochs], ylim=[0.3, 0.9],
                         legend=['train loss', 'train acc', 'test acc'])
-    for epoch in range(num_epoches):
+    for epoch in range(num_epochs):
         train_metrics = train_epoch_ch3(net, train_iter, loss, updater)
         test_acc = evaluate_accuracy(net, test_iter)
         animator.add(epoch + 1, train_metrics +(test_acc,))
@@ -127,6 +127,12 @@ def predict_ch3(net, test_iter, n=6):
     show_images(
         X[0:n].reshape((n, 28, 28)), 1, n, titles=titles[0:n]
     )
+
+def linreg(X, w, b):
+    return torch.matmul(X, w) + b
+
+def squared_loss(y_hat, y):
+    return (y_hat - y.reshape(y_hat.shape)) ** 2 / 2
     
 
 class Animator:
